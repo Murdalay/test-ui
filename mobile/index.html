@@ -3,12 +3,12 @@
 <html>
 	<head>
 		<title>Vizor</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
 	    <link href="website.css" rel="Stylesheet" type="text/css"  />
 		<script type="text/javascript" src="../static/jquery.min.js"></script>
 		<script type="text/javascript" src="../static/player.min.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 	</head>
 
@@ -17,8 +17,8 @@
 			<canvas
 				id="webgl-canvas"
 				class="webgl-canvas-normal"
-				width="1400px"
-				height="700px"
+				width="640px"
+				height="1136px"
 				oncontextmenu="return false;"
 				data-autoplay="true"
 				data-graph-url="http://vizor.io/data/graph/kschzt/landing-controls.min.json"
@@ -32,7 +32,7 @@
 			<div class="slider-row terrain-control">
 				<div class="slider__edge"></div>
 				<div class="slider-wrapper">
-					<div class="terrain-control__slider"></div>
+					<input type="range" name="terrain-control__slider" id="terrain-control__slider" value="10" min="0" max="100">
 				</div>
 				<div class="slider__edge"></div>
 				<div class="slider__caption">TERRAIN LO</div>
@@ -41,7 +41,7 @@
 			<div class="slider-row speed-control">
 				<div class="slider__edge"></div>
 				<div class="slider-wrapper">
-					<div class="speed-control__slider"></div>
+					<input type="range" name="speed-control__slider" id="speed-control__slider" value="10" min="0" max="100">
 				</div>
 				<div class="slider__edge"></div>
 				<div class="slider__caption">CAM SLOW</div>
@@ -87,21 +87,15 @@
 			$(window).on('resize', onResize)
 			$(window).on('vizorLoaded', onResize);
 
-			$(".terrain-control__slider").slider({
-				change: function( event, ui ) {
-					E2.app.player.set_parameter('terrainHeight', ui.value / 500)
-			    },
-			    slide: function( event, ui ) {
-					E2.app.player.set_parameter('terrainHeight', ui.value / 500)
+			$("#terrain-control__slider").slider({
+				stop: function( event, ui ) {
+					E2.app.player.set_parameter('terrainHeight', $("#terrain-control__slider").val() / 500)
 			    }
 			});
 
-			$(".speed-control__slider").slider({
-				change: function( event, ui ) {
-					E2.app.player.set_parameter('speed', ui.value / -200)
-			    },
-    			slide: function( event, ui ) {
-					E2.app.player.set_parameter('speed', ui.value / -200)
+			$("#speed-control__slider").slider({
+				stop: function( event, ui ) {
+					E2.app.player.set_parameter('speed', $("#speed-control__slider").val() / -200)
 			    }
 			});
 

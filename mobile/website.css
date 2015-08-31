@@ -35,16 +35,13 @@ body {
   position: fixed;
   z-index: 10001;
   color: #fff;
+  left: 0;
+  bottom: 0;
   font-family: 'Source Sans Pro', sans-serif;
   background-color: rgba(40,40,40, 0.7);
   background-blend-mode: overlay;
-  top: 64px;
-  left: 64px;
-  min-width: 420px;
-  max-width: 840px;
-  min-height: 400px;
-  width: 35%;
-  border-radius: 10px;
+  min-height: 70%;
+  width: 100%;
 }
 
 .control-widget__caption {
@@ -55,7 +52,7 @@ body {
 }
 
 .slider-row {
-  padding-top: 40px;
+  padding-top: 60px;
   padding-left: 40px;
   padding-right: 40px;
   font-size: 30px;
@@ -65,7 +62,7 @@ body {
 }
 
 .toggle-row {
-  padding-left: 40px;
+  padding-left: 60px;
   padding-top: 40px;
   padding-bottom: 40px;
   height: 60px;
@@ -143,7 +140,7 @@ body {
   border-width: 1px;
   border-color: #fff;
   background-blend-mode: overlay;
-  background-image: url(../static/slider-handle-round.svg);
+  background-image: url(slider-handle-round.svg);
   background-repeat: no-repeat;
 }
 
@@ -151,7 +148,7 @@ body {
   mix-blend-mode: overlay;
   background-blend-mode: overlay;
   background-color: rgba(40, 40, 40, 0.5);
-  background-image: url(../static/slider-handle-round.svg);
+  background-image: url(slider-handle-round.svg);
   background-repeat: no-repeat;
 }
 
