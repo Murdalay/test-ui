@@ -1,0 +1,114 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Vizor</title>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	    <link href="website.css" rel="Stylesheet" type="text/css"  />
+		<script type="text/javascript" src="../static/jquery.min.js"></script>
+		<script type="text/javascript" src="../static/player.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+	</head>
+
+	<body>
+		<div class="stage--front">
+			<canvas
+				id="webgl-canvas"
+				class="webgl-canvas-normal"
+				width="1400px"
+				height="700px"
+				oncontextmenu="return false;"
+				data-autoplay="true"
+				data-graph-url="http://vizor.io/data/graph/kschzt/landing-controls.min.json"
+				>
+			</canvas>
+		</div>
+		<div class="control-widget">
+			<img class="control-widget__header" src="../static/logo.png"/>
+			<div class="control-widget__caption">Customize your own space</div>
+			<div class="control-widget__divider"></div>
+			<div class="slider-row terrain-control">
+				<div class="slider__edge"></div>
+				<div class="slider-wrapper">
+					<div class="terrain-control__slider"></div>
+				</div>
+				<div class="slider__edge"></div>
+				<div class="slider__caption">TERRAIN LO</div>
+				<div class="slider__caption slider__caption_right">TERRAIN HI</div>
+			</div>
+			<div class="slider-row speed-control">
+				<div class="slider__edge"></div>
+				<div class="slider-wrapper">
+					<div class="speed-control__slider"></div>
+				</div>
+				<div class="slider__edge"></div>
+				<div class="slider__caption">CAM SLOW</div>
+				<div class="slider__caption slider__caption_right">CAM FAST</div>
+			</div>
+			<div class="toggle-row">
+				<div class="particles-control">
+					<div class="toggle__caption">ENABLE PARTICLES</div>
+					<div class="toggle-wrapper">
+						<input type="checkbox" id="particles-control__toggle"><label for="particles-control__toggle"><div class="check-handle"></div></label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			var $canvas = $('#webgl-canvas')
+			var $window = $(window)
+			var $stage = $('.stage--front')
+
+			function onResize() {
+				E2.core.renderer.fullscreen = true
+
+				setTimeout(function() {
+					E2.core.renderer.fullscreen = true
+
+					var width = $window.width()
+					var height = $window.height()
+
+					var devicePixelRatio = window.devicePixelRatio || 1;
+					var pixelRatioAdjustedWidth = devicePixelRatio * width;
+					var pixelRatioAdjustedHeight = devicePixelRatio * height;
+
+					$canvas[0].width = pixelRatioAdjustedWidth
+					$canvas[0].height = pixelRatioAdjustedHeight
+					$stage.css('width', width + 'px')
+					$stage.css('height', height + 'px')
+
+					E2.core.renderer.update_viewport()
+				}, 20)
+			}
+
+			$(window).on('resize', onResize)
+			$(window).on('vizorLoaded', onResize);
+
+			$(".terrain-control__slider").slider({
+				change: function( event, ui ) {
+					E2.app.player.set_parameter('terrainHeight', ui.value / 500)
+			    },
+			    slide: function( event, ui ) {
+					E2.app.player.set_parameter('terrainHeight', ui.value / 500)
+			    }
+			});
+
+			$(".speed-control__slider").slider({
+				change: function( event, ui ) {
+					E2.app.player.set_parameter('speed', ui.value / -200)
+			    },
+    			slide: function( event, ui ) {
+					E2.app.player.set_parameter('speed', ui.value / -200)
+			    }
+			});
+
+			$("#particles-control__toggle").button();
+			$("#particles-control__toggle").change(function() {
+			    E2.app.player.set_parameter('particlesEnabled', this.checked);
+			});
+		</script>
+	</body>
+</html>
