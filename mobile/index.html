@@ -9,7 +9,7 @@
 		<script type="text/javascript" src="../static/player.min.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600' rel='stylesheet' type='text/css'>
 	</head>
 
 	<body>
@@ -25,24 +25,21 @@
 				>
 			</canvas>
 		</div>
+
 		<div class="control-widget">
-			<img class="control-widget__header" src="../static/logo.png"/>
+			<img class="control-widget__header" src="logo-mobile.svg"/>
 			<div class="control-widget__caption">Customize your own space</div>
 			<div class="control-widget__divider"></div>
 			<div class="slider-row terrain-control">
 				<div class="slider__edge"></div>
-				<div class="slider-wrapper">
-					<input type="range" name="terrain-control__slider" id="terrain-control__slider" value="10" min="0" max="100">
-				</div>
+				<input type="range" name="terrain-control__slider" id="terrain-control__slider" value="40" min="0" max="100" data-mini="true">
 				<div class="slider__edge"></div>
 				<div class="slider__caption">TERRAIN LO</div>
 				<div class="slider__caption slider__caption_right">TERRAIN HI</div>
 			</div>
 			<div class="slider-row speed-control">
 				<div class="slider__edge"></div>
-				<div class="slider-wrapper">
-					<input type="range" name="speed-control__slider" id="speed-control__slider" value="10" min="0" max="100">
-				</div>
+				<input type="range" name="speed-control__slider" id="speed-control__slider" value="18" min="0" max="100" data-mini="true">
 				<div class="slider__edge"></div>
 				<div class="slider__caption">CAM SLOW</div>
 				<div class="slider__caption slider__caption_right">CAM FAST</div>
@@ -51,7 +48,10 @@
 				<div class="particles-control">
 					<div class="toggle__caption">ENABLE PARTICLES</div>
 					<div class="toggle-wrapper">
-						<input type="checkbox" id="particles-control__toggle"><label for="particles-control__toggle"><div class="check-handle"></div></label>
+						<select name="particles-control__toggle" id="particles-control__toggle" data-role="slider">
+							<option value="off">off</option>
+						    <option value="on">on</option>
+					    </select>
 					</div>
 				</div>
 			</div>
@@ -84,25 +84,32 @@
 				}, 20)
 			}
 
+
 			$(window).on('resize', onResize)
 			$(window).on('vizorLoaded', onResize);
 
-			$("#terrain-control__slider").slider({
-				stop: function( event, ui ) {
-					E2.app.player.set_parameter('terrainHeight', $("#terrain-control__slider").val() / 500)
-			    }
+			var _control = {};
+
+			_control.terrain = function(event, ui) {
+				E2.app.player.set_parameter('terrainHeight', ($("#terrain-control__slider").val() / 600))
+			}
+			_control.speed = function(event, ui) {
+				E2.app.player.set_parameter('speed', ($("#speed-control__slider").val() / -200))
+			}
+			_control.updateAll = function(event, ui) {
+				setTimeout(_control.speed, 20);
+				setTimeout(_control.terrain, 20);
+			}
+
+			$(".terrain-control").on('slidestop', _control.terrain);
+			$(".speed-control").on('slidestop', _control.speed);
+
+			$("#particles-control__toggle").on('slidestop', function( event, ui ) {
+			    E2.app.player.set_parameter('particlesEnabled', $("#particles-control__toggle").val() == 'on');
 			});
 
-			$("#speed-control__slider").slider({
-				stop: function( event, ui ) {
-					E2.app.player.set_parameter('speed', $("#speed-control__slider").val() / -200)
-			    }
-			});
+			$(window).on('vizorLoaded', _control.updateAll);
 
-			$("#particles-control__toggle").button();
-			$("#particles-control__toggle").change(function() {
-			    E2.app.player.set_parameter('particlesEnabled', this.checked);
-			});
 		</script>
 	</body>
 </html>

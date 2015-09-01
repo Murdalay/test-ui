@@ -1,0 +1,14 @@
+{
+  "author": "Ragnar",
+  "name": "test-ui",
+  "email": "murdalay@gmail.com",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "dependencies": {
+    "morgan":"*",
+    "express":"4.11.2",
+    "path": "*"
+  }
+}
